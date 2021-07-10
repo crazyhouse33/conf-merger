@@ -1,2 +1,1 @@
-remove unnecessary files in test kernel build folder
 make a base_config truely generic and make a subclass for kernel conf
