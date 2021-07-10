@@ -1,0 +1,34 @@
+#!/usr/bin/python3
+
+import parser
+from config.config_dir import Config_dir
+from config.base_config import Config
+import sys
+from config.linux_kernel import Linux_kernel_conf
+
+def print_selection(base, triggered):
+    print ("Selected confs:",'\n\t'.join(map(str,base)),file=sys.stderr, sep="\n\t")
+    if triggeredCombos:
+        print ("Additional files triggered by combinaison:", '\n\t'.join(map(str,triggered)), file=sys.stderr, sep= "\n\t")
+
+args=parser.parseArgs()
+# Setting some specif things for sub classes
+if args.build_dir:
+    Linux_kernel_conf.set_merger_path(args.build_dir + '/scripts/kconfig/merge_config.sh') 
+
+# Merging all given confs
+conf_dir = Config_dir(args.path[0], config_class=args.type)
+for conf in args.path[1::]:
+    additionnal = Config_dir(conf, config_class=args.type)
+    if args.check:
+        additionnal.check()
+    conf_dir.merge(additionnal)
+
+selection = conf_dir.get_configs(args.configs)
+triggeredCombos = conf_dir.get_triggered_combos(selection)
+print_selection(selection, triggeredCombos)
+conf_dir.config_class.merge(selection + triggeredCombos, args.dest)
+
+
+
+

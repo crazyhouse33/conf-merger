@@ -1,1 +1,4 @@
-make a base_config truely generic and make a subclass for kernel conf
+distribute properly on pip
+start cutting confs
+test defaults conf with -c
+test conf overriding mechanism

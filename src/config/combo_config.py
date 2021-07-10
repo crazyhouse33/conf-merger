@@ -1,6 +1,6 @@
-from config.base_config import Config
+from config.virtual_config import Virtual_config
 
-class Combo_Config(Config):
+class Combo_config(Virtual_config):
     def __init__(self, path):
         super().__init__(path)
         self.configs =  self.name.split('-')

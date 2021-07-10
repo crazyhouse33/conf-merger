@@ -8,7 +8,7 @@ sys.path.append(root_dir / 'src')
 test_dir = pathlib.Path(__file__).parent.absolute()
 output = test_dir / 'products/result.conf'
 
-exec_cmd = 'python3 {}/src/conf-builder -c {} -b {} -o {} '.format(root_dir, test_dir / 'conf', test_dir / 'test-build', output )
+exec_cmd = 'python3 {}/src/conf-merger -p {} -b {} -o {} '.format(root_dir, test_dir / 'linux-kernel', test_dir / 'test-build', output )
 
 
 config1= 'CONFIG_DQL=y'
@@ -41,5 +41,3 @@ def test_2_simple():
 def test_3_combo():
     assert_run(exec_cmd + 'bla1 bla3', 0)
     assert_file_match_configs(output, [config1, config3, combo13])
-
-
