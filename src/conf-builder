@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import parser
+import config.factory as factory
+import sys
+from config.base_config import Config
+
+def trigger_combos(confs, combos):
+    triggeredCombos=[]
+
+    for combo in combos:
+        if combo.satisfied_by(confs):                    
+                triggeredCombos.append(combo)
+    return triggeredCombos
+
+
+def print_selection(base, triggered):
+    print ("Selected confs:",'\n\t'.join(map(str,base)),file=sys.stderr, sep="\n\t")
+    if triggeredCombos:
+        print ("Additional files triggered by combinaison:", '\n\t'.join(map(str,triggered)), file=sys.stderr, sep= "\n\t")
+
+args=parser.parseArgs()
+Config.set_merger_path(args.build_dir + '/scripts/kconfig/merge_config.sh')
+confs, combos = factory.extract_configs_from_fs(args.conf_dir, args.configs)
+triggeredCombos = trigger_combos(confs, combos)
+print_selection(confs, triggeredCombos)
+Config.merge_configs(confs + triggeredCombos, args.dest)
+
+
+
+
