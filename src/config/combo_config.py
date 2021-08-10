@@ -8,4 +8,3 @@ class Combo_config(Virtual_config):
 
     def satisfied_by(self, config_list):
         return all( config in map(lambda x: x.name, config_list) for config in self.configs )
-        

@@ -6,7 +6,7 @@ from config.config_dir import class_matcher
 
 def parseArgs(*args):
     parser = argparse.ArgumentParser(description='Sub configuration manager')
-    parser.add_argument('-p', '--path',  nargs='+', help= f"Paths to configuration folders. Can be relative to {default_dir} conf repository provided in this repo. Configurations will be searched from left to right providing an overiding mehanism")
+    parser.add_argument('-p', '--path',  action='append', help= f"Paths to configuration folders. Can be relative to {default_dir} conf repository provided in this repo. Configurations will be searched from left to right providing an overiding mehanism")
     parser.add_argument('-t', '--type', choices= class_matcher.keys(), help= f"Force configuration type. Not required if given --conf-dir folders are named accordingly")
     parser.add_argument('-c', '--check', action= "store_true", help = "Fully check configuration of any selected individual configuration folder")
     parser.add_argument('-o', '--dest',  default="./result.conf", help = "Destination of the resulting configuration choice. (default: %(default)s )")

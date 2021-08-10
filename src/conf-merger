@@ -24,6 +24,9 @@ for conf in args.path[1::]:
         additionnal.check()
     conf_dir.merge(additionnal)
 
+if len(args.path) > 1:
+    conf_dir.remove_combos_doublons()
+
 selection = conf_dir.get_configs(args.configs)
 triggeredCombos = conf_dir.get_triggered_combos(selection)
 print_selection(selection, triggeredCombos)

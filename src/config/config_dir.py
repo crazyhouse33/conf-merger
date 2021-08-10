@@ -4,7 +4,7 @@ from config.combo_config import Combo_config
 import sys
 import os.path
 from pathlib import Path
-
+from collections import OrderedDict
 default_dir = Path(__file__).parent.parent / 'default-confs'
 
 class_matcher = {"linux-kernel" : Linux_kernel_conf}
@@ -20,7 +20,7 @@ class Config_dir:
             if os.path.isdir(default):
                 path = default
             else:
-                sys.exit("Cant find specified configuration folder: {path}")
+                sys.exit(f"Cant find specified configuration folder: {path}")
         self.path=path
         if config_class:
             self.config_class = class_matcher[config_class]
@@ -52,8 +52,6 @@ class Config_dir:
             matching = self.__matching_configs(selected)
             if not matching:
                 sys.exit(f"Config {selected} not found in {self.path}")
-            elif len(matching) > 1: 
-                sys.exit("Ambigious config name:\n\t{}".format('\n\t'.join(matching)))
             ret.append(self.config_class(matching[0]))
         return ret
 
@@ -62,19 +60,29 @@ class Config_dir:
         for combo in self.combos:
             if combo.satisfied_by(selection):
                     triggered_combos.append(combo)
-        return triggered_combos
-
-    def merge(self, other):
-        if self.config_class != other.config_class:
-            sys.exit(f"Type error: cant mix {self.path} of type {self.config_class} with {other.path} of type {other.config_class}")
-        self.combos.extend(other.combos)
-        self.others.extend(other.others)
+        return triggered_combos 
 
     def check(self):
         for i in range(len(self.other)):
             for j in range(i-1):
                 if pathlib.part( self.other[i])[-1] == pathlib.part( self.other[j])[-1]:
                     sys.exit( f"Name colision: {self.other[i]} and {self.other[j]}" )
+
+    def merge(self, other):
+           if self.config_class != other.config_class:
+               sys.exit(f"Type error: cant mix {self.path} of type {self.config_class} with {other.path} of type {other.config_class}")
+           self.combos.extend(other.combos)
+           self.others.extend(other.others)
+
+    def remove_combos_doublons(self):
+        seen = {}
+        new = []
+        for combo in self.combos:
+            if not combo.name in seen:
+                new.append(combo)
+            seen[combo.name] = True
+                
+        self.combos = new
 
 
 
