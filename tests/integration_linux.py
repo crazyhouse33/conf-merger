@@ -18,6 +18,7 @@ comboAll= 'CONFIG_DEBUG_KERNEL=y'
 combo13 = 'CONFIG_XZ_DEC_SPARC=y'
 
 def assert_run(cmd, expected_status):
+    print("TEST",cmd)
     ret = os.system(cmd)
     assert os.WEXITSTATUS(ret) == expected_status
 
@@ -41,3 +42,8 @@ def test_2_simple():
 def test_3_combo():
     assert_run(exec_cmd + 'bla1 bla3', 0)
     assert_file_match_configs(output, [config1, config3, combo13])
+
+def test_conf_folder():
+    conf_cmd = 'python3 {}/src/conf-merger -p {} -b {} --check '.format(root_dir, test_dir / 'linux-kernel', test_dir / 'test-build' )
+    assert_run(conf_cmd, 0)
+ 

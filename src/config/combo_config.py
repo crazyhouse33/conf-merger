@@ -7,5 +7,5 @@ class Combo_config(Virtual_config):
         assert len(self.configs) >= 2, "Combo config file {} should have at least two base configs".format(path)
 
     def satisfied_by(self, config_list):
-        return all( config in map(str,config_list) for config in self.configs )
+        return all( config in map(lambda x: x.name, config_list) for config in self.configs )
         

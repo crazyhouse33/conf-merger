@@ -12,7 +12,7 @@ def parseArgs(*args):
     parser.add_argument('-o', '--dest',  default="./result.conf", help = "Destination of the resulting configuration choice. (default: %(default)s )")
     #parser.add_argument('-l', '--list',  action= "store_true", help = "List all selectable configuration according to current --conf-dir selection")
     parser.add_argument('-b', '--build-dir',  default=".", type = dir_path, help = "Build directory used for kernels modes. (default: %(default)s )")
-    parser.add_argument('configs', nargs='+', help = "Name of configs you want to merge")
+    parser.add_argument('configs', nargs='*', help = "Name of configs you want to merge")
 
     args = parser.parse_args(*args)
     return args

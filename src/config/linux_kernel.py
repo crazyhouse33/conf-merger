@@ -11,7 +11,7 @@ class Linux_kernel_conf(Config):
         Linux_kernel_conf.merge_script=path
 
     @staticmethod
-    def merge(configs, dest):
+    def _merge(configs, dest):
         configs_str = ' '.join([config.path for config in configs])
         parent_dir = Path(dest).parent
         parent_dir.mkdir(parents=True, exist_ok=True)

@@ -5,9 +5,9 @@ A litle python soft to cut down giant blop of configuration files into reusable 
 The goal being to create different kinds of kernels configs like this:
 
 ```
-conf-merger -p linux-kernel -p keyboard -p screen -p mouse -o mydesktop.conf
-conf-merger -p linux-kernel -p keyboard -p bfs-shedule -o server.conf
-conf-merger -p linux-kernel -p keyboard -p vmWareHypervisor -p grsecurity -o vmCenter.conf
+conf-merger -p linux-kernel -o mydesktop.conf keyboard screen mouse 
+conf-merger -p linux-kernel -o server.conf linux-kernel keyboard bfs-shedule 
+conf-merger -p linux-kernel -p /path/conf -o vmCenter.conf keyboard vmWareHypervisor grsecurity 
 ```
  
 # Supported
