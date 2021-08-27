@@ -1,6 +1,7 @@
 import glob
 from config.linux_kernel import Linux_kernel_conf
 from config.combo_config import Combo_config
+from config.group_config import Group_config
 import sys
 import os.path
 from pathlib import Path
@@ -37,22 +38,27 @@ class Config_dir:
             path = config_files.pop()
             relative= './' + os.path.relpath(path, self.path)
             if '/combo/' in relative:
-                combos.append(Combo_config(path))
+                combos.append( Combo_config(path))
+            elif '/alias/' in relative:
+                regulars.append(Group_config(path))
             else:
-                regulars.append( path )
+                regulars.append( self.config_class(path) )
         return combos, regulars
 
-    def __matching_configs(self, name): 
-        return [ config for config in self.others if config.endswith(f"/{name}.conf") ]
+    def __get_first_matching(self, name): 
+        for config in self.others:
+            if config.name == name:
+                return config
+        sys.exit(f"Config {name} not found in {self.path}")
 
     def get_configs(self, selection):
         ret=[]
-
         for selected in selection:
-            matching = self.__matching_configs(selected)
-            if not matching:
-                sys.exit(f"Config {selected} not found in {self.path}")
-            ret.append(self.config_class(matching[0]))
+            matching = self.__get_first_matching(selected)
+            if isinstance(matching, Group_config):
+                ret.extend(self.get_configs(matching.get_members()))
+            else:
+                ret.append(matching)
         return ret
 
     def get_triggered_combos(self, selection):
@@ -81,7 +87,6 @@ class Config_dir:
             if not combo.name in seen:
                 new.append(combo)
             seen[combo.name] = True
-                
         self.combos = new
 
 

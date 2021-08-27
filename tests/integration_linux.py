@@ -61,4 +61,9 @@ def test_3_combo():
 def test_conf_folder():
     conf_cmd = 'python3 {}/src/conf-merger -p {} -b {} --check '.format(root_dir, root_dir / 'default-confs/linux-kernel', test_dir / 'test-build' )
     assert_run(conf_cmd, 0)
+
+def test_group():
+    assert_run(exec_cmd + 'toto', 0)
+    assert_file_match_configs(output, [config1, config2])
+
  

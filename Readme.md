@@ -16,12 +16,19 @@ conf-merger -p linux-kernel -p /path/conf -o vmCenter.conf keyboard vmWareHyperv
 
 # Configuration folder
 
-## Regular configuration
 A configuration folder contain a set of reusable piece of configuration organized in a tree fashion.
+
+## Regular configuration
+
+A configuration block.
 
 ## Combo configuration
 
-If /combo/ is present in a path to a configuration, then it's name is interpreted as a "-" list of configuration that are needed in order to trigger the combo.
+If /combo/ is present in a path to a configuration, then it's name is interpreted as a "-" separated list of configuration that, if all present in the user selection,  will trigger in the combo file.
+
+## Alias configuration
+
+If /alias/ is present in a path to a configuration, then the configuration is interpreted as a newline separated list of configuration to add to the mix. This feature is there only to facilitate breaking blocks of confs into smaller peaces without breaking scripts relying on the old block.
 
 # Cli
 
